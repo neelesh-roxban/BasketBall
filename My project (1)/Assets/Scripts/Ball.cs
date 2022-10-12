@@ -4,10 +4,12 @@ using System.Collections;
 public class Ball : MonoBehaviour {
 
 	public Rigidbody ballRigidbody;
+    public GameManager gameManager;
 	public Transform target;
 
 	public float h = 25;
 	public float gravity = 0;
+    private bool isLaunched = false;
 
 
 	void Start() {
@@ -23,14 +25,20 @@ public class Ball : MonoBehaviour {
 	}
 
 	void Launch() {
-		Physics.gravity = Vector3.up * gravity;
-		ballRigidbody.useGravity = true;
-		ballRigidbody.velocity = CalculateLaunchData ().initialVelocity;
+        if(isLaunched == false )
+        {
+          Physics.gravity = Vector3.up * gravity;
+		  ballRigidbody.useGravity = true;
+		  ballRigidbody.velocity = CalculateLaunchData ().initialVelocity;
+          isLaunched = true;
+          gameManager.SpawnBall();
+        }
+		
 	}
 
 	LaunchData CalculateLaunchData() {
 		float displacementY = target.position.y - ballRigidbody.position.y;
-		Vector3 displacementXZ = new Vector3 (target.position.x - ballRigidbody.position.x, 0, target.position.z - ballRigidVody.position.z);
+		Vector3 displacementXZ = new Vector3 (target.position.x - ballRigidbody.position.x, 0, target.position.z - ballRigidbody.position.z);
 		float time = Mathf.Sqrt(-2*h/gravity) + Mathf.Sqrt(2*(displacementY - h)/gravity);
 		Vector3 velocityY = Vector3.up * Mathf.Sqrt (-2 * gravity * h);
 		Vector3 velocityXZ = displacementXZ / time;
@@ -52,8 +60,9 @@ public class Ball : MonoBehaviour {
 		
 	}
 
-    public void DestroyBallRigidVody()
+    public void DestroyBall()
     {
-       Destroy(this,3);
+       Destroy(gameObject,3);
+       Debug.Log("destroy");
     }
 }

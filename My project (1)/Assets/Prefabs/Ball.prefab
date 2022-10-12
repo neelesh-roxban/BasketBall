@@ -127,7 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 214cfad856d1c7d4e9a62b1c998c8550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 3287742343675552057}
+  ballRigidbody: {fileID: 3287742343675552057}
+  gameManager: {fileID: 0}
   target: {fileID: 0}
   h: 5
   gravity: -9
