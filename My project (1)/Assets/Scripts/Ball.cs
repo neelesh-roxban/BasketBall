@@ -8,7 +8,7 @@ public class Ball : MonoBehaviour {
 	public Transform target;
 
 	public float h = 25;
-	public float gravity = 0;
+	private float gravity = -9.8f;
     private bool isLaunched = false;
 
 
@@ -17,28 +17,30 @@ public class Ball : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			Launch ();
+		if (Input.GetKeyDown (KeyCode.Space))
+        {
+			Shoot ();
 		}
 
 		
 	}
 
-	void Launch() {
+	void Shoot() {
         if(isLaunched == false )
         {
           Physics.gravity = Vector3.up * gravity;
 		  ballRigidbody.useGravity = true;
-		  ballRigidbody.velocity = CalculateLaunchData ().initialVelocity;
+		  ballRigidbody.velocity = GetData ().initialVelocity;
           isLaunched = true;
           gameManager.SpawnBall();
         }
 		
 	}
 
-	LaunchData CalculateLaunchData() {
+	LaunchData GetData() {
 		float displacementY = target.position.y - ballRigidbody.position.y;
-		Vector3 displacementXZ = new Vector3 (target.position.x - ballRigidbody.position.x, 0, target.position.z - ballRigidbody.position.z);
+		Vector3 displacementXZ = new Vector3 (target.position.x - ballRigidbody.position.x, 
+                                             0, target.position.z - ballRigidbody.position.z);
 		float time = Mathf.Sqrt(-2*h/gravity) + Mathf.Sqrt(2*(displacementY - h)/gravity);
 		Vector3 velocityY = Vector3.up * Mathf.Sqrt (-2 * gravity * h);
 		Vector3 velocityXZ = displacementXZ / time;
@@ -49,8 +51,8 @@ public class Ball : MonoBehaviour {
 	
 
 	struct LaunchData {
-		public readonly Vector3 initialVelocity;
-		public readonly float timeToTarget;
+		public  Vector3 initialVelocity;
+		public  float timeToTarget;
 
 		public LaunchData (Vector3 initialVelocity, float timeToTarget)
 		{
